@@ -5,9 +5,6 @@ namespace Valour.TenorTwo.Responses;
 
 public class MediaResponse
 {
-    // The amount of results requested
-    private int _count;
-    
     /// <summary>
     ///     the most relevant GIFs for the requested search term - Sorted by relevancy Rank
     /// </summary>
