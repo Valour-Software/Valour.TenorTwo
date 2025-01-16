@@ -60,8 +60,23 @@ public class TenorClient
         
         var culture = CultureInfo.CurrentCulture;
 
-        _country = country ?? (new RegionInfo(culture.Name)).TwoLetterISORegionName;
-        _locale = locale ?? $"{culture.TwoLetterISOLanguageName}_{_country}";
+        try
+        {
+            _country = country ?? (new RegionInfo(culture.Name)).TwoLetterISORegionName;
+        }
+        catch
+        {
+            _country = "US";
+        }
+
+        try
+        {
+            _locale = locale ?? $"{culture.TwoLetterISOLanguageName}_{_country}";
+        }
+        catch
+        {
+            _locale = "en_US";
+        }
     }
     
     /// <summary>
