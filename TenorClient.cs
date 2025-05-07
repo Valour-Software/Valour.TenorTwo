@@ -24,14 +24,14 @@ public class TenorClient
     /// <summary>
     /// The ISO 3166-1 country code
     /// </summary>
-    private readonly string _country;
+    private readonly string _country = "US";
 
     /// <summary>
     /// The default language to interpret the search string (xx_YY).
     /// xx is the language's ISO 639-1 language code, while the optional
     /// _YY value is the two-letter ISO 3166-1 country code.
     /// </summary>
-    private readonly string _locale;
+    private readonly string _locale = "en_US";
     
     /// <summary>
     /// Internal Http client
@@ -42,8 +42,9 @@ public class TenorClient
     /// A value used to differentiate requests between integrations
     /// </summary>
     private readonly string _clientKey;
-    
-    public TenorClient(string key, string clientKey = null, string country = null, string locale = null, HttpClient http = null)
+
+    public TenorClient(string key, string clientKey = null, string country = null, string locale = null,
+        HttpClient http = null)
     {
         _apiKey = key;
         _clientKey = clientKey;
@@ -57,28 +58,19 @@ public class TenorClient
             _http = new HttpClient();
             _http.BaseAddress = new Uri(BaseAddress);
         }
-        
-        var culture = CultureInfo.CurrentCulture;
 
         try
         {
+            var culture = CultureInfo.CurrentCulture;
             _country = country ?? (new RegionInfo(culture.Name)).TwoLetterISORegionName;
-        }
-        catch
-        {
-            _country = "US";
-        }
-
-        try
-        {
             _locale = locale ?? $"{culture.TwoLetterISOLanguageName}_{_country}";
-        }
-        catch
+        } 
+        catch (Exception e)
         {
-            _locale = "en_US";
+            // do nothing
         }
     }
-    
+        
     /// <summary>
     /// Returns the media for the given ids using the Tenor API
     /// </summary>
